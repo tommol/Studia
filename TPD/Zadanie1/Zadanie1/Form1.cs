@@ -17,6 +17,16 @@ namespace Zadanie1
 			InitializeComponent();
 		}
 
-		
+		private void chooseCriterium_SelectedIndexChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void button1_Click(object sender, EventArgs e)
+		{
+			Matrix m = new Matrix(3, 3);
+			IDecisionRule rules = new HurwiczRule(1);
+			m.MakeDecision(rules);
+		}
 	}
 }
