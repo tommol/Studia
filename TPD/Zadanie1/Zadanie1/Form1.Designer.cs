@@ -32,29 +32,26 @@
 			this.gb_input = new System.Windows.Forms.GroupBox();
 			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
 			this.lbl_natureStates = new System.Windows.Forms.Label();
-			this.maskedTextBox1 = new System.Windows.Forms.MaskedTextBox();
+			this.natureStatesCount = new System.Windows.Forms.MaskedTextBox();
 			this.lblDecisions = new System.Windows.Forms.Label();
-			this.maskedTextBox2 = new System.Windows.Forms.MaskedTextBox();
+			this.decisionsCount = new System.Windows.Forms.MaskedTextBox();
 			this.lblCriteria = new System.Windows.Forms.Label();
 			this.chooseCriterium = new System.Windows.Forms.ComboBox();
 			this.label1 = new System.Windows.Forms.Label();
-			this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+			this.securityLevel = new System.Windows.Forms.TextBox();
 			this.panel1 = new System.Windows.Forms.Panel();
-			this.dataGridView2 = new System.Windows.Forms.DataGridView();
-			this.dataGridView1 = new System.Windows.Forms.DataGridView();
-			this.button1 = new System.Windows.Forms.Button();
+			this.viewGrid = new System.Windows.Forms.DataGridView();
+			this.probabilityGrid = new System.Windows.Forms.DataGridView();
 			this.pn_top.SuspendLayout();
 			this.gb_input.SuspendLayout();
 			this.flowLayoutPanel1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
 			this.panel1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.viewGrid)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.probabilityGrid)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// pn_top
 			// 
-			this.pn_top.Controls.Add(this.button1);
 			this.pn_top.Controls.Add(this.gb_input);
 			this.pn_top.Dock = System.Windows.Forms.DockStyle.Top;
 			this.pn_top.Location = new System.Drawing.Point(0, 0);
@@ -76,13 +73,13 @@
 			// flowLayoutPanel1
 			// 
 			this.flowLayoutPanel1.Controls.Add(this.lbl_natureStates);
-			this.flowLayoutPanel1.Controls.Add(this.maskedTextBox1);
+			this.flowLayoutPanel1.Controls.Add(this.natureStatesCount);
 			this.flowLayoutPanel1.Controls.Add(this.lblDecisions);
-			this.flowLayoutPanel1.Controls.Add(this.maskedTextBox2);
+			this.flowLayoutPanel1.Controls.Add(this.decisionsCount);
 			this.flowLayoutPanel1.Controls.Add(this.lblCriteria);
 			this.flowLayoutPanel1.Controls.Add(this.chooseCriterium);
 			this.flowLayoutPanel1.Controls.Add(this.label1);
-			this.flowLayoutPanel1.Controls.Add(this.numericUpDown1);
+			this.flowLayoutPanel1.Controls.Add(this.securityLevel);
 			this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 16);
 			this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -98,14 +95,16 @@
 			this.lbl_natureStates.TabIndex = 0;
 			this.lbl_natureStates.Text = "Stany natury";
 			// 
-			// maskedTextBox1
+			// natureStatesCount
 			// 
-			this.maskedTextBox1.Location = new System.Drawing.Point(119, 13);
-			this.maskedTextBox1.Mask = "00000";
-			this.maskedTextBox1.Name = "maskedTextBox1";
-			this.maskedTextBox1.Size = new System.Drawing.Size(100, 20);
-			this.maskedTextBox1.TabIndex = 7;
-			this.maskedTextBox1.ValidatingType = typeof(int);
+			this.natureStatesCount.Location = new System.Drawing.Point(119, 13);
+			this.natureStatesCount.Mask = "00000";
+			this.natureStatesCount.Name = "natureStatesCount";
+			this.natureStatesCount.Size = new System.Drawing.Size(100, 20);
+			this.natureStatesCount.TabIndex = 7;
+			this.natureStatesCount.ValidatingType = typeof(int);
+			this.natureStatesCount.MaskInputRejected += new System.Windows.Forms.MaskInputRejectedEventHandler(this.natureStatesCount_MaskInputRejected);
+			this.natureStatesCount.TextChanged += new System.EventHandler(this.natureStatesCount_TextChanged);
 			// 
 			// lblDecisions
 			// 
@@ -115,14 +114,16 @@
 			this.lblDecisions.TabIndex = 2;
 			this.lblDecisions.Text = "Decyzje";
 			// 
-			// maskedTextBox2
+			// decisionsCount
 			// 
-			this.maskedTextBox2.Location = new System.Drawing.Point(119, 39);
-			this.maskedTextBox2.Mask = "00000";
-			this.maskedTextBox2.Name = "maskedTextBox2";
-			this.maskedTextBox2.Size = new System.Drawing.Size(100, 20);
-			this.maskedTextBox2.TabIndex = 8;
-			this.maskedTextBox2.ValidatingType = typeof(int);
+			this.decisionsCount.Location = new System.Drawing.Point(119, 39);
+			this.decisionsCount.Mask = "00000";
+			this.decisionsCount.Name = "decisionsCount";
+			this.decisionsCount.Size = new System.Drawing.Size(100, 20);
+			this.decisionsCount.TabIndex = 8;
+			this.decisionsCount.ValidatingType = typeof(int);
+			this.decisionsCount.MaskInputRejected += new System.Windows.Forms.MaskInputRejectedEventHandler(this.decisionsCount_MaskInputRejected);
+			this.decisionsCount.TextChanged += new System.EventHandler(this.decisionsCount_TextChanged);
 			// 
 			// lblCriteria
 			// 
@@ -157,60 +158,42 @@
 			this.label1.Text = "Poziom ostrośności";
 			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
-			// numericUpDown1
+			// securityLevel
 			// 
-			this.numericUpDown1.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            131072});
-			this.numericUpDown1.Location = new System.Drawing.Point(119, 92);
-			this.numericUpDown1.Maximum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-			this.numericUpDown1.Name = "numericUpDown1";
-			this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
-			this.numericUpDown1.TabIndex = 9;
+			this.securityLevel.Enabled = false;
+			this.securityLevel.Location = new System.Drawing.Point(119, 92);
+			this.securityLevel.Name = "securityLevel";
+			this.securityLevel.Size = new System.Drawing.Size(100, 20);
+			this.securityLevel.TabIndex = 9;
 			// 
 			// panel1
 			// 
-			this.panel1.Controls.Add(this.dataGridView2);
-			this.panel1.Controls.Add(this.dataGridView1);
+			this.panel1.Controls.Add(this.viewGrid);
+			this.panel1.Controls.Add(this.probabilityGrid);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panel1.Location = new System.Drawing.Point(0, 178);
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(736, 188);
 			this.panel1.TabIndex = 1;
 			// 
-			// dataGridView2
+			// viewGrid
 			// 
-			this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dataGridView2.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.dataGridView2.Location = new System.Drawing.Point(0, 53);
-			this.dataGridView2.Name = "dataGridView2";
-			this.dataGridView2.Size = new System.Drawing.Size(736, 135);
-			this.dataGridView2.TabIndex = 1;
+			this.viewGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.viewGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.viewGrid.Location = new System.Drawing.Point(0, 53);
+			this.viewGrid.Name = "viewGrid";
+			this.viewGrid.Size = new System.Drawing.Size(736, 135);
+			this.viewGrid.TabIndex = 1;
 			// 
-			// dataGridView1
+			// probabilityGrid
 			// 
-			this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Top;
-			this.dataGridView1.Location = new System.Drawing.Point(0, 0);
-			this.dataGridView1.Name = "dataGridView1";
-			this.dataGridView1.Size = new System.Drawing.Size(736, 53);
-			this.dataGridView1.TabIndex = 0;
-			// 
-			// button1
-			// 
-			this.button1.Location = new System.Drawing.Point(347, 52);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(75, 23);
-			this.button1.TabIndex = 1;
-			this.button1.Text = "button1";
-			this.button1.UseVisualStyleBackColor = true;
-			this.button1.Click += new System.EventHandler(this.button1_Click);
+			this.probabilityGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.probabilityGrid.Dock = System.Windows.Forms.DockStyle.Top;
+			this.probabilityGrid.Location = new System.Drawing.Point(0, 0);
+			this.probabilityGrid.Name = "probabilityGrid";
+			this.probabilityGrid.Size = new System.Drawing.Size(736, 53);
+			this.probabilityGrid.TabIndex = 0;
+			this.probabilityGrid.Visible = false;
 			// 
 			// Form1
 			// 
@@ -225,10 +208,9 @@
 			this.gb_input.ResumeLayout(false);
 			this.flowLayoutPanel1.ResumeLayout(false);
 			this.flowLayoutPanel1.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
 			this.panel1.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.viewGrid)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.probabilityGrid)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -243,13 +225,12 @@
 		private System.Windows.Forms.Label lblCriteria;
 		private System.Windows.Forms.ComboBox chooseCriterium;
 		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.DataGridView dataGridView1;
-		private System.Windows.Forms.MaskedTextBox maskedTextBox1;
-		private System.Windows.Forms.MaskedTextBox maskedTextBox2;
+		private System.Windows.Forms.DataGridView probabilityGrid;
+		private System.Windows.Forms.MaskedTextBox natureStatesCount;
+		private System.Windows.Forms.MaskedTextBox decisionsCount;
 		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.NumericUpDown numericUpDown1;
-		private System.Windows.Forms.DataGridView dataGridView2;
-		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.DataGridView viewGrid;
+		private System.Windows.Forms.TextBox securityLevel;
 	}
 }
 

@@ -21,12 +21,24 @@ namespace Zadanie1
 			set { _internal[i, j] = value; }
 		}
 
+		public double[] this[int i]
+		{
+			get
+			{
+				double[] tmp = new double[this.Columns];
+				for (int j = 0; j < tmp.Length; j++)
+				{
+					tmp[j] = this[i, j];
+				}
+				return tmp;
+			}
+		}
 		public double Max(int column)
 		{
 			double max = this[0, column];
-			for(int i=1; i < _internal.GetLength(0); i++)
+			for (int i = 1; i < _internal.GetLength(0); i++)
 			{
-				if (this[i, column]>max)
+				if (this[i, column] > max)
 				{
 					max = this[i, column];
 				}
@@ -37,10 +49,76 @@ namespace Zadanie1
 		public int Rows
 		{
 			get { return _internal.GetLength(0); }
+			set
+			{
+				int old = _internal.GetLength(0);
+				double[,] copy = new double[value, Columns];
+				if (value > Rows)
+				{
+					for (int i = 0; i < old; i++)
+					{
+						for (int j = 0; j < Columns; j++)
+						{
+							copy[i, j] = _internal[i, j];
+						}
+					}
+					for (int i = old; i < Rows; i++)
+					{
+						for (int j = 0; j < Columns; j++)
+						{
+							copy[i, j] = _internal[i, j];
+						}
+					}
+					_internal = copy;
+				}
+				else if (value < Rows)
+				{
+					for (int i = 0; i < old; i++)
+					{
+						for (int j = 0; j < Columns; j++)
+						{
+							copy[i, j] = _internal[i, j];
+						}
+					}
+					_internal = copy;
+				}
+			}
 		}
 		public int Columns
 		{
 			get { return _internal.GetLength(1); }
+			set
+			{
+				int old = _internal.GetLength(1);
+				double[,] copy = new double[Rows, value];
+				if (value > Columns)
+				{
+
+					for (int i = 0; i < Rows; i++)
+					{
+						for (int j = 0; j < old; j++)
+						{
+							copy[i, j] = _internal[i, j];
+						}
+						for (int j = old; j < value; j++)
+						{
+							copy[i, j] = 0;
+						}
+					}
+					_internal = copy;
+				}
+				else if (value < Columns)
+				{
+					for (int i = 0; i < Rows; i++)
+					{
+						for (int j = 0; j < value; j++)
+						{
+							copy[i, j] = _internal[i, j];
+						}
+					}
+					_internal = copy;
+				}
+			}
 		}
 
 

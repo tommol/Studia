@@ -55,6 +55,7 @@
     </Compile>
     <Compile Include="HurwiczRule.cs" />
     <Compile Include="IDecisionRule.cs" />
+    <Compile Include="LaplaceEqualRule.cs" />
     <Compile Include="LaplaceRule.cs" />
     <Compile Include="Matrix.cs" />
     <Compile Include="OptimisticRule.cs" />

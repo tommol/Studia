@@ -8,10 +8,15 @@ namespace Zadanie1
 {
 	public class HurwiczRule : IDecisionRule
 	{
-		private double lambda = 0;
-		public HurwiczRule(double securityValue)
+		public double Lambda
 		{
-			lambda = securityValue;
+			get;
+			set;
+		}
+
+		public HurwiczRule(double securityValue =0.5d)
+		{
+			Lambda = securityValue;
 		}
 		public int Decide(Matrix matrix)
 		{
@@ -19,7 +24,7 @@ namespace Zadanie1
 			int decision = 0;
 			for (int i = 0; i < matrix.Rows; i++)
 			{
-				decisions[i] = lambda * matrix.Min(i) + (1 - lambda) * matrix.Max(i);
+				decisions[i] = Lambda * matrix.Min(i) + (1 - Lambda) * matrix.Max(i);
 			}
 			double max = decisions[0];
 			for (int i = 1; i < matrix.Rows; i++)

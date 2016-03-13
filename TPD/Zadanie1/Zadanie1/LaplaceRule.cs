@@ -8,10 +8,14 @@ namespace Zadanie1
 {
 	public class LaplaceRule : IDecisionRule
 	{
-		double[] p;
+		public double[] Probability {
+			get;
+			set;
+		}
+		
 		public LaplaceRule(double[] probability)
 		{
-			p = probability;
+			Probability = probability;
 		}
 
 		public int Decide(Matrix matrix)
@@ -22,7 +26,7 @@ namespace Zadanie1
 			{
 				for(int j =0; j< matrix.Columns; j++)
 				{
-					rows[i] += p[j] * matrix[i, j];
+					rows[i] += Probability[j] * matrix[i, j];
 				}
 			}
 			double max = rows[0];
