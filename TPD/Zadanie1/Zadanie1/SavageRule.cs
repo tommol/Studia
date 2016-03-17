@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace Zadanie1
 {
-	public class LaplaceEqualRule : LaplaceRule
+	class SavageRule
 	{
-		
-		private  LaplaceEqualRule(double[] probability) : base(probability) { }
 	}
 }

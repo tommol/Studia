@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -17,10 +19,19 @@ namespace Zadanie1
 			new WaldRule(),
 			new OptimisticRule(),
 			new HurwiczRule(),
-			new LaplaceRule(new double[]{0.5,0.5})
+			new LaplaceRule(1),
+			new BayesRule(new double[]{0.5,0.5})
+
 		};
-		private Matrix matrix = new Matrix(1, 1);
+
+		private InputData inputData = new InputData()
+		{
+			ProfitMatrix = new Matrix(1, 1),
+			Probability = new double[1] { 1 },
+			RiskFactor = 0.5d
+		};
 		private IDecisionRule selectedRule;
+		const string text = "Przy {0} najlepszą decyzją jest decyzja {1}.\\n";
 
 		public Form1()
 		{
@@ -31,17 +42,24 @@ namespace Zadanie1
 		{
 			selectedRule = rules[chooseCriterium.SelectedIndex];
 			HurwiczRuleChange();
-			if(selectedRule is LaplaceRule)
+			if (selectedRule is BayesRule)
 			{
-				probabilityGrid.Columns.Clear();
-				(selectedRule as LaplaceRule).Probability = new double[matrix.Columns];
-				double p = 1.0 / matrix.Columns;
-				probabilityGrid.Visible = true;
-				for(int i =0; i< (selectedRule as LaplaceRule).Probability.Length; i++)
+				if (selectedRule is LaplaceRule)
 				{
-					probabilityGrid.Columns.Add("colP" + i.ToString(), "P" + i.ToString());
+					selectedRule = new LaplaceRule(viewGrid.Rows[0].Cells.Count);
+				}
+				else {
+					probabilityGrid.Columns.Clear();
+					(selectedRule as BayesRule).Probability = inputData.Probability;
+					probabilityGrid.Visible = true;
+					for (int i = 0; i < inputData.Probability.Length; i++)
+					{
+						probabilityGrid.Columns.Add("colP" + i.ToString(), "P" + i.ToString());
+						probabilityGrid.Rows[0].Cells[i].Value = inputData.Probability[i].ToString();
+					}
 				}
 			}
+
 			updateResult();
 		}
 
@@ -70,22 +88,37 @@ namespace Zadanie1
 		{
 			viewGrid.Rows.Clear();
 			viewGrid.Columns.Clear();
-			for (int i = 0; i < matrix.Columns; i++) 
+			for (int i = 0; i < inputData.ProfitMatrix.Columns; i++)
 			{
 				viewGrid.Columns.Add("S" + (i + 1).ToString(), "S" + (i + 1).ToString());
 			}
-			for (int i = 0; i < matrix.Rows; i++)
+			for (int i = 0; i < inputData.ProfitMatrix.Rows; i++)
 			{
 				viewGrid.Rows.Insert(i);
-				for(int j=0; j< matrix.Columns; j++)
+				for (int j = 0; j < inputData.ProfitMatrix.Columns; j++)
 				{
-					viewGrid.Rows[i].Cells[j].Value = matrix[i, j];
-				}			
+					viewGrid.Rows[i].Cells[j].Value = inputData.ProfitMatrix[i, j];
+				}
 			}
 		}
 		private void updateResult()
 		{
-			int decision = matrix.MakeDecision(selectedRule);
+			for (int i = 0; i < viewGrid.Rows.Count - 1; i++)
+			{
+				viewGrid.Rows[i].DefaultCellStyle.BackColor = Color.White;
+				for (int j = 0; j < viewGrid.Rows[i].Cells.Count; j++)
+				{
+					inputData.ProfitMatrix[i, j] = double.Parse(viewGrid.Rows[i].Cells[j].Value.ToString());
+				}
+			}
+			if (selectedRule != null)
+			{
+				int[] decisions = inputData.ProfitMatrix.MakeDecision(selectedRule);
+				for (int i = 0; i < decisions.Length; i++)
+				{
+					viewGrid.Rows[decisions[i]].DefaultCellStyle.BackColor = Color.LawnGreen;
+				}
+			}
 		}
 
 
@@ -97,20 +130,19 @@ namespace Zadanie1
 
 		private void natureStatesCount_TextChanged(object sender, EventArgs e)
 		{
-			if(natureStatesCount.Text != string.Empty)
+			if (natureStatesCount.Text != string.Empty)
 			{
 				int parsed = int.Parse(natureStatesCount.Text);
-				if( parsed == 0)
+				if (parsed == 0)
 				{
 					MessageBox.Show("Liczba stanów natury musi być większa od 0");
 					return;
 				}
 				else
 				{
-					matrix.Columns = parsed;
+					inputData.ProfitMatrix.Columns = parsed;
 				}
 				updateMatrix();
-				//updateResult();
 			}
 		}
 
@@ -126,10 +158,9 @@ namespace Zadanie1
 				}
 				else
 				{
-					matrix.Rows = parsed;
+					inputData.ProfitMatrix.Rows = parsed;
 				}
 				updateMatrix();
-				//updateResult();
 			}
 		}
 
@@ -137,6 +168,42 @@ namespace Zadanie1
 		{
 			MessageBox.Show("Liczba decyzji musi być większa od 0");
 		}
+
+		private void calculateBtn_Click(object sender, EventArgs e)
+		{
+			updateResult();
+		}
+
+		private void saveBtn_Click(object sender, EventArgs e)
+		{
+			if (saveFile.ShowDialog() == DialogResult.OK)
+			{
+				using (FileStream stream = new FileStream(saveFile.FileName, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+				{
+					DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(InputData));
+
+					serializer.WriteObject(stream, inputData);
+				}
+			}
+		}
+
+		private void loadBtn_Click(object sender, EventArgs e)
+		{
+			if (openFile.ShowDialog() == DialogResult.OK)
+			{
+				using (FileStream stream = new FileStream(openFile.FileName, FileMode.Open, FileAccess.Read))
+				{
+					DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(InputData));
+
+					inputData = (InputData)serializer.ReadObject(stream);
+				}
+			}
+			updateMatrix();
+			decisionsCount.Text = inputData.ProfitMatrix.Rows.ToString();
+			natureStatesCount.Text = inputData.ProfitMatrix.Columns.ToString();
+			securityLevel.Text = inputData.RiskFactor.ToString();
+		}
+
 		
 	}
 }

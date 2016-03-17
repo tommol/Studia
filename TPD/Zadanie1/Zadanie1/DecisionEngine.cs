@@ -8,7 +8,7 @@ namespace Zadanie1
 {
 	public static class DecisionEngine
 	{
-		public static int MakeDecision(this Matrix matrix, IDecisionRule rules)
+		public static int[] MakeDecision(this Matrix matrix, IDecisionRule rules)
 		{
 			return rules.Decide(matrix);
 		}

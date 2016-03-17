@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -55,12 +56,14 @@
     </Compile>
     <Compile Include="HurwiczRule.cs" />
     <Compile Include="IDecisionRule.cs" />
-    <Compile Include="LaplaceEqualRule.cs" />
+    <Compile Include="InputData.cs" />
     <Compile Include="LaplaceRule.cs" />
+    <Compile Include="BayesRule.cs" />
     <Compile Include="Matrix.cs" />
     <Compile Include="OptimisticRule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SavageRule.cs" />
     <Compile Include="WaldRule.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

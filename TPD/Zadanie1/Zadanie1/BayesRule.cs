@@ -6,43 +6,49 @@ using System.Threading.Tasks;
 
 namespace Zadanie1
 {
-	public class HurwiczRule : IDecisionRule
+	public class BayesRule : IDecisionRule
 	{
-		public double Lambda
+		public double[] Probability
 		{
 			get;
 			set;
 		}
 
-		public HurwiczRule(double securityValue =0.5d)
+		public BayesRule(double[] probability)
 		{
-			Lambda = securityValue;
+			Probability = probability;
 		}
+
 		public int[] Decide(Matrix matrix)
 		{
 			List<int> decisions = new List<int>();
 			double[] rows = new double[matrix.Rows];
-			decisions.Add(0);
+			
 			for (int i = 0; i < matrix.Rows; i++)
 			{
-				rows[i] = Lambda * matrix.Min(i) + (1 - Lambda) * matrix.Max(i);
+				for (int j = 0; j < matrix.Columns; j++)
+				{
+					rows[i] += Probability[j] * matrix[i, j];
+				}
 			}
+			decisions.Add(0);
 			double max = rows[0];
-			for (int i = 1; i < matrix.Rows; i++)
+			for (int i = 1; i < rows.Length; i++)
 			{
 				if (rows[i] >= max)
 				{
-					if(rows[i] > max)
+					if (rows[i] > max)
 					{
 						decisions.Clear();
 						max = rows[i];
-					}					
-					decisions.Add(i);					
+					}
+					decisions.Add(i);
 				}
+
 			}
 			return decisions.ToArray();
 		}
-
-		public virtual string Name { get { return "Kryterium Hurwicza"; } }
+		public string Name
+		{ get { return "Kryterium Bayesa Laplace'a"; } }
 	}
 }

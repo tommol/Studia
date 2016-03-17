@@ -2,6 +2,7 @@
 {
 	public interface IDecisionRule
 	{
-		int Decide(Matrix matrix);
+		int[] Decide(Matrix matrix);
+		string Name { get; }
 	}
 }

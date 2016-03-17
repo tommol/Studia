@@ -12,5 +12,7 @@ namespace Zadanie1
 		{
 			
 		}
+		public virtual new string Name
+		{ get { return "Kryterium optymistyczne"; } }
 	}
 }
