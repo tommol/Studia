@@ -20,8 +20,8 @@ namespace Zadanie1
 			new OptimisticRule(),
 			new HurwiczRule(),
 			new LaplaceRule(1),
-			new BayesRule(new double[]{0.5,0.5})
-
+			new BayesRule(new double[]{0.5,0.5}),
+			new SavageRule()
 		};
 
 		private InputData inputData = new InputData()
@@ -204,6 +204,19 @@ namespace Zadanie1
 			securityLevel.Text = inputData.RiskFactor.ToString();
 		}
 
-		
+		private void securityLevel_TextChanged(object sender, EventArgs e)
+		{
+			double parsed;
+			if(double.TryParse(securityLevel.Text, out parsed)){
+				if(parsed >0 || parsed < 1)
+				{
+					if (selectedRule is HurwiczRule)
+					{
+						(selectedRule as HurwiczRule).Lambda = parsed;
+					}
+					inputData.RiskFactor = parsed;
+				}
+			}
+		}
 	}
 }

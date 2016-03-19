@@ -13,12 +13,12 @@ namespace Zadanie1
 			return rules.Decide(matrix);
 		}
 
-		public static Matrix Invert(this Matrix matrix)
+		public static Matrix RelativeLost(this Matrix matrix)
 		{
-			for (int i = 0; i < matrix.Rows; i++)
+			for (int j = 0; j < matrix.Columns; j++)
 			{
-				double max = matrix.Max(i);
-				for (int j = 0; j < matrix.Columns; j++)
+				double max = matrix.Column(j).Max();
+				for (int i = 0; i < matrix.Rows; i++)
 				{
 					matrix[i, j] = max - matrix[i, j];
 				}

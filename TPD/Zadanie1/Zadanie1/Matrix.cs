@@ -36,17 +36,20 @@ namespace Zadanie1
 				return _internal[i];
 			}
 		}
+
+		public double[] Column(int j)
+		{
+			double[] result = new double[this.Rows];
+			for(int i=0; i<this.Rows; i++)
+			{
+				result[i] = this[i, j];
+			}
+			return result;
+		}
+
 		public double Max(int row)
 		{
-			double max = this[row,0];
-			for (int i = 1; i < _internal[row].Length; i++)
-			{
-				if (this[row,i] > max)
-				{
-					max = this[row,i];
-				}
-			}
-			return max;
+			return this[row].Max();
 		}
 
 		public int Rows
@@ -131,15 +134,7 @@ namespace Zadanie1
 		
 		public double Min(int row)
 		{
-			double min = this[row,0];
-			for (int i = 1; i < _internal[row].Length; i++)
-			{
-				if (this[row,i] < min)
-				{
-					min = this[row,i];
-				}
-			}
-			return min;
+			return this[row].Min();
 		}
 	}
 }

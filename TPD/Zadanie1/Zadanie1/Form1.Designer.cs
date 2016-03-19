@@ -199,6 +199,7 @@
 			this.securityLevel.Name = "securityLevel";
 			this.securityLevel.Size = new System.Drawing.Size(100, 20);
 			this.securityLevel.TabIndex = 9;
+			this.securityLevel.TextChanged += new System.EventHandler(this.securityLevel_TextChanged);
 			// 
 			// calculateBtn
 			// 
